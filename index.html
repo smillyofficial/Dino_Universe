@@ -136,6 +136,11 @@
                     </select>
                 </div>
                 <div class="setting-item">
+                    <label>Grok API Key (Get from https://console.x.ai/)</label>
+                    <input type="text" id="api-key" placeholder="Enter your xAI API key" style="width:100%; padding:10px; background:var(--bubble); border:1px solid var(--border); border-radius:8px; color:var(--text-main);">
+                    <button class="setting-btn" style="margin-top:10px;" onclick="saveApiKey()">Save API Key</button>
+                </div>
+                <div class="setting-item">
                     <button class="setting-btn" onclick="resetAllData()">Reset All Data</button>
                 </div>
             </div>
@@ -159,6 +164,7 @@
         let conversationHistory = [];
         let plugins = JSON.parse(localStorage.getItem('plugins') || '{}');
         let settings = JSON.parse(localStorage.getItem('settings') || '{"ui":"dark","anim":"on"}');
+        let apiKey = localStorage.getItem('xai_api_key') || '';
         const items = [
             { id: 'gapple', name: 'Golden Apple', price: 20 },
             { id: 'darmor', name: 'Diamond Armour', price: 90 },
@@ -171,6 +177,7 @@
         document.body.classList.toggle('bright', settings.ui === 'bright');
         document.getElementById('ui-mode').value = settings.ui;
         document.getElementById('anim-bg').value = settings.anim;
+        document.getElementById('api-key').value = apiKey;
         toggleAnimBg(settings.anim);
 
         // Animated Background
@@ -204,6 +211,12 @@
             settings.ui = val;
             localStorage.setItem('settings', JSON.stringify(settings));
             document.body.classList.toggle('bright', val === 'bright');
+        }
+
+        function saveApiKey() {
+            apiKey = document.getElementById('api-key').value.trim();
+            localStorage.setItem('xai_api_key', apiKey);
+            alert('API Key saved!');
         }
 
         function resetAllData() {
@@ -294,7 +307,7 @@
             updateCurrentChat();
             input.value = '';
 
-            let response = await getResponse(text);
+            const response = await getResponse(text);
             renderMsg('ai', response);
             conversationHistory.push({ role: 'ai', content: response });
             updateCurrentChat();
@@ -306,7 +319,42 @@
             const isSmartPlugin = plugins.smartthink;
             let res = '';
 
-            // Analyze input implicitly with more advanced matching
+            if (apiKey) {
+                try {
+                    const systemPrompt = { role: 'system', content: 'You are Console AI, a smart assistant for Minecraft tips, coding help, and general queries. Keep responses concise.' };
+                    const messages = [systemPrompt, ...conversationHistory.slice(-10)]; // Limit history to last 10 for context
+
+                    const response = await fetch('https://api.x.ai/v1/responses', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify({
+                            input: messages,
+                            model: 'grok-4'
+                        })
+                    });
+
+                    if (!response.ok) throw new Error('API error');
+
+                    const data = await response.json();
+                    res = data.output[0].content[0].text;
+                } catch (e) {
+                    console.error(e);
+                    res = await fallbackResponse(low, isDeep, isSmartPlugin);
+                }
+            } else {
+                res = await fallbackResponse(low, isDeep, isSmartPlugin);
+            }
+
+            return res;
+        }
+
+        async function fallbackResponse(low, isDeep, isSmartPlugin) {
+            let res = '';
+
+            // Existing fallback logic
             if (low.includes('hi') || low.includes('hello') || low.includes('hey')) {
                 res = 'Hey! Ready for Minecraft or code?';
             } else if (low.includes('diamond')) {
@@ -345,7 +393,6 @@
                 }
             }
 
-            // Make smarter with plugin
             if (isSmartPlugin) {
                 res = `Enhanced: ${res} (Smart Plugin active)`;
             }
