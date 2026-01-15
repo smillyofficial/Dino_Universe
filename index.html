@@ -19,11 +19,6 @@
             color: #ffffff;
             font-family: 'Space Grotesk', sans-serif;
             overflow-x: hidden;
-            visibility: hidden; /* Hidden until auth check completes */
-        }
-
-        body.authorized {
-            visibility: visible;
         }
 
         h1, h2, h3, h4, .bungee {
@@ -136,7 +131,11 @@
             align-items: center;
             justify-content: center;
             overflow-y: auto;
-            visibility: visible;
+        }
+
+        /* Main Content Container */
+        #main-content {
+            display: none; /* Hidden until auth */
         }
 
         input {
@@ -537,7 +536,22 @@
         import { getFirestore, doc, setDoc, getDoc, collection, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Setup
-        const firebaseConfig = JSON.parse(__firebase_config);
+        let firebaseConfig;
+        if (typeof __firebase_config !== 'undefined') {
+            firebaseConfig = JSON.parse(__firebase_config);
+        } else {
+            console.error("FIREBASE CONFIG MISSING: Please add your config below.");
+            firebaseConfig = {
+                // ADD YOUR FIREBASE CONFIG HERE FOR GITHUB PAGES
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_PROJECT_ID.firebasestorage.app",
+                messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+        }
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -567,7 +581,13 @@
             if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                 await signInWithCustomToken(auth, __initial_auth_token);
             } else {
-                await signInAnonymously(auth);
+                try {
+                    await signInAnonymously(auth);
+                } catch (e) {
+                    console.error("Auth Failed (likely config/domain)", e);
+                    showToast("AUTH ERROR: Check Console");
+                    throw e;
+                }
             }
             return auth.currentUser;
         };
@@ -587,11 +607,13 @@
         const revealSite = () => {
             document.body.classList.add('authorized');
             document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
         };
 
         const hideSite = () => {
             document.body.classList.remove('authorized');
             document.getElementById('auth-overlay').style.display = 'flex';
+            document.getElementById('main-content').style.display = 'none';
             setLoading(false);
         };
 
@@ -704,7 +726,8 @@
         // ------------------ SITE LOGIC ------------------
 
         function updateBalanceDisplay() {
-            document.getElementById('balance-display').innerText = userData.balance;
+            const display = document.getElementById('balance-display');
+            if(display) display.innerText = userData.balance;
         }
 
         window.handleRedeem = async () => {
@@ -810,7 +833,7 @@
             }
         };
 
-        // Initial setup
+        // Reveal body content structure (but keep hidden by auth overlay)
         document.body.style.visibility = 'visible';
     </script>
 </body>
