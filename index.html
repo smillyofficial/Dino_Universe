@@ -31,21 +31,15 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes glitchMist {
-            0% { text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; opacity: 1; }
-            25% { opacity: 0.8; transform: skew(1deg); }
-            50% { text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9; opacity: 1; }
-            75% { opacity: 0.9; transform: skew(-1deg); }
-            100% { text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
-        }
-
         .animate-pop {
             animation: fadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         .glass {
-            background: rgba(15, 15, 15, 0.95);
-            border: 2px solid #222;
+            background: rgba(20, 20, 20, 0.8);
+            backdrop-filter: blur(8px);
+            border: 4px solid #1a1a1a;
+            box-shadow: 4px 4px 0px #000;
         }
 
         .ruler-card {
@@ -53,46 +47,29 @@
             position: relative;
         }
         .ruler-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px var(--primary);
             border-color: var(--primary);
-            background: rgba(30, 30, 30, 1);
-        }
-
-        .secret-card {
-            display: none;
-            border: 2px solid #5000ff;
-            background: linear-gradient(45deg, #050505, #1a0033);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .secret-card:hover .glitch-text {
-            animation: glitchMist 0.2s infinite;
-        }
-
-        .secret-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle, rgba(80, 0, 255, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .secret-card:hover::after {
-            opacity: 1;
         }
 
         .btn-pixel {
             background: var(--primary);
             color: black;
-            border-bottom: 4px solid #b45309;
+            border-bottom: 6px solid #b45309;
+            border-right: 6px solid #b45309;
             transition: all 0.1s;
+            image-rendering: pixelated;
         }
         .btn-pixel:hover { filter: brightness(1.1); }
         .btn-pixel:active {
-            transform: translateY(2px);
-            border-bottom-width: 0;
+            border: 0;
+            transform: translate(4px, 4px);
+            box-shadow: none;
+        }
+        .btn-pixel:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
         }
 
         .pixel-dead {
@@ -105,7 +82,7 @@
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(0, 0, 0, 0.9);
             align-items: center;
             justify-content: center;
             padding: 1.5rem;
@@ -114,14 +91,14 @@
 
         input {
             background: #000 !important;
-            border: 2px solid #333 !important;
-            padding: 0.75rem !important;
+            border: 4px solid #333 !important;
+            padding: 1rem !important;
             color: var(--primary) !important;
             outline: none !important;
         }
         input:focus { border-color: var(--primary) !important; }
 
-        nav { border-bottom: 2px solid #1a1a1a; }
+        nav { border-bottom: 6px solid #1a1a1a; }
     </style>
 </head>
 <body class="pt-20">
@@ -132,7 +109,7 @@
         
         <div id="auth-section" class="flex items-center gap-4">
             <div id="user-info" class="hidden items-center gap-4">
-                <div class="bg-black px-4 py-1 border-2 border-amber-400 text-amber-400 text-[10px] pixel-font flex items-center gap-2">
+                <div class="bg-black px-4 py-1 border-4 border-amber-400 text-amber-400 text-[10px] pixel-font flex items-center gap-2">
                     <span id="coin-count">0</span>
                     <span class="opacity-70">COINS</span>
                 </div>
@@ -145,7 +122,7 @@
     <!-- Hero -->
     <section class="min-h-[80vh] flex flex-col items-center justify-center text-center px-6">
         <div class="animate-pop">
-            <h1 class="pixel-font text-4xl md:text-7xl mb-8 text-amber-400 drop-shadow-[4px_4px_0_rgba(0,0,0,1)]">DINO UNIVERSE</h1>
+            <h1 class="pixel-font text-4xl md:text-7xl mb-8 text-amber-400 drop-shadow-[6px_6px_0_rgba(0,0,0,1)]">DINO UNIVERSE</h1>
             <p class="max-w-3xl text-2xl md:text-4xl text-gray-400 italic mb-12 leading-tight">
                 "THIS IS LIKE UNSTABLE SMP BUT NOT SCRIPTED AND RAW SURVIVAL."
             </p>
@@ -166,41 +143,35 @@
 
     <!-- Rulers -->
     <section id="rulers" class="py-24 px-6 max-w-7xl mx-auto">
-        <h2 class="pixel-font text-2xl text-center mb-16 uppercase tracking-widest underline decoration-amber-400 decoration-2 underline-offset-8">THE RULERS</h2>
-        <div id="rulers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="ruler-card glass p-8 border-t-8 border-red-600 animate-pop">
+        <h2 class="pixel-font text-2xl text-center mb-16 uppercase tracking-widest underline decoration-amber-400 decoration-4 underline-offset-8">THE RULERS</h2>
+        <div id="rulers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="ruler-card glass p-8 border-t-[12px] border-red-600 animate-pop" style="animation-delay: 0.2s">
                 <p class="pixel-font text-[10px] text-red-500 mb-3">ANTAGONIST</p>
                 <h3 class="pixel-font text-lg text-white mb-2">TEMPEST</h3>
                 <p class="text-amber-400 text-lg italic">Doombringer of Hell</p>
             </div>
-            <div class="ruler-card glass p-8 border-t-8 border-blue-500 animate-pop">
+            <div class="ruler-card glass p-8 border-t-[12px] border-blue-500 animate-pop" style="animation-delay: 0.3s">
                 <p class="pixel-font text-[10px] text-blue-500 mb-3">PROTAGONIST</p>
                 <h3 class="pixel-font text-lg text-white mb-2">AKRAM</h3>
                 <p class="text-amber-400 text-lg italic">King of Over Realm</p>
             </div>
-            <div class="ruler-card glass p-8 border-t-8 border-green-500 animate-pop">
+            <div class="ruler-card glass p-8 border-t-[12px] border-green-500 animate-pop" style="animation-delay: 0.4s">
                 <p class="pixel-font text-[10px] text-green-500 mb-3">PROTAGONIST</p>
                 <h3 class="pixel-font text-lg text-white mb-2">MIKEY</h3>
                 <p class="text-amber-400 text-lg italic">The Warlord</p>
             </div>
-            <div class="ruler-card glass p-8 border-t-8 border-zinc-700 pixel-dead animate-pop" onclick="showLore()">
-                <p class="pixel-font text-[10px] text-zinc-500 mb-3">ELIMINATED</p>
-                <h3 class="pixel-font text-lg text-white/50 mb-2">PIXEL</h3>
-                <p class="text-amber-400/50 text-lg italic line-through">God of Nether</p>
-            </div>
-            <!-- Secret Member Card -->
-            <div id="secret-member" class="secret-card glass p-8 border-t-8 border-purple-600 animate-pop col-span-1 lg:col-span-1">
-                <p class="pixel-font text-[10px] text-purple-400 mb-3 glitch-text">UNKNOWN??</p>
-                <h3 class="pixel-font text-lg text-white mb-2 glitch-text">SECRET MEMBER</h3>
-                <p class="text-amber-400 text-lg italic glitch-text">Destoryer of realms | Eternality doombringer</p>
+            <div class="ruler-card glass p-8 border-t-[12px] border-red-600 animate-pop" style="animation-delay: 0.5s">
+                <p class="pixel-font text-[10px] text-red-500 mb-3">ANTAGONIST</p>
+                <h3 class="pixel-font text-lg text-white mb-2">TNT_TOST</h3>
+                <p class="text-amber-400 text-lg italic">King of Nether</p>
             </div>
         </div>
     </section>
 
     <!-- Codes -->
     <section id="codes" class="py-24 px-6 bg-black/30">
-        <div class="max-w-xl mx-auto glass p-10 border-2 border-amber-400 relative">
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-400 text-black px-4 py-1 pixel-font text-[8px]">REWARDS</div>
+        <div class="max-w-xl mx-auto glass p-10 border-4 border-amber-400 relative">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-amber-400 text-black px-4 py-1 pixel-font text-[10px]">REWARDS</div>
             <h2 class="pixel-font text-xl text-center mb-8">REDEEM COINS</h2>
             <div id="redeem-ui" class="opacity-20 pointer-events-none transition-opacity">
                 <input type="text" id="code-input" placeholder="ENTER CODE..." class="w-full mb-6 pixel-font text-[10px] uppercase">
@@ -215,16 +186,19 @@
     <section id="shop" class="py-24 px-6 max-w-7xl mx-auto">
         <h2 class="pixel-font text-2xl text-center mb-16 uppercase">THE BLACK MARKET</h2>
         
+        <!-- Category: Weapons -->
         <div class="mb-12">
             <p class="pixel-font text-[10px] text-amber-400 mb-6 flex items-center gap-4"><span class="h-px flex-1 bg-zinc-800"></span> ARSENAL <span class="h-px flex-1 bg-zinc-800"></span></p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="shop-arsenal"></div>
         </div>
 
+        <!-- Category: Pickaxes -->
         <div class="mb-12">
             <p class="pixel-font text-[10px] text-amber-400 mb-6 flex items-center gap-4"><span class="h-px flex-1 bg-zinc-800"></span> MINING GEAR <span class="h-px flex-1 bg-zinc-800"></span></p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="shop-pickaxes"></div>
         </div>
 
+        <!-- Category: Armor -->
         <div class="mb-12">
             <p class="pixel-font text-[10px] text-amber-400 mb-6 flex items-center gap-4"><span class="h-px flex-1 bg-zinc-800"></span> ARMOR PACKS <span class="h-px flex-1 bg-zinc-800"></span></p>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="shop-armor"></div>
@@ -244,7 +218,8 @@
                     <label class="pixel-font text-[8px] text-gray-500 mb-2 block">PASSWORD</label>
                     <input type="password" id="auth-pass" class="w-full pixel-font text-[10px]">
                 </div>
-                <button onclick="handleAuth()" class="w-full py-5 pixel-font text-sm font-bold btn-pixel">ENTER</button>
+                <p id="auth-error" class="text-red-500 text-[10px] pixel-font text-center hidden"></p>
+                <button id="auth-primary-btn" onclick="handleAuth()" class="w-full py-5 pixel-font text-sm font-bold btn-pixel">ENTER</button>
                 <button id="auth-switch-btn" onclick="toggleAuthMode()" class="w-full text-gray-500 pixel-font text-[8px] uppercase hover:text-white">Need an account? Register</button>
             </div>
         </div>
@@ -252,190 +227,236 @@
 
     <!-- Receipt Modal -->
     <div id="receipt-modal" class="modal">
-        <div class="glass p-10 max-w-lg w-full text-center border-amber-400">
-            <h2 class="pixel-font text-xl mb-4 text-emerald-500">Purchased!</h2>
-            <p id="receipt-body" class="text-white text-lg mb-8 leading-relaxed"></p>
-            <div class="bg-black p-6 border-2 border-dashed border-zinc-700 mb-8">
-                <p class="pixel-font text-[8px] text-gray-500 mb-2">CLAIM CODE</p>
+        <div class="glass p-10 max-w-md w-full text-center border-emerald-600">
+            <h2 class="pixel-font text-xl mb-6 text-emerald-500">SUCCESS!</h2>
+            <p id="receipt-text" class="text-white text-xl mb-8"></p>
+            <div class="bg-black p-6 border-4 border-dashed border-zinc-800 mb-8">
+                <p class="pixel-font text-[8px] text-gray-500 mb-2">ORDER ID</p>
                 <p id="receipt-code" class="pixel-font text-sm text-amber-400 break-all select-all"></p>
             </div>
             <button onclick="document.getElementById('receipt-modal').classList.remove('active')" class="w-full py-4 pixel-font text-xs font-bold btn-pixel">CLOSE</button>
         </div>
     </div>
 
-    <script>
-        // --- 1. DATA CONFIG ---
-        const shopData = {
-            'shop-arsenal': [
-                { name: "IRON SWORD & AXE", price: 50 },
-                { name: "DIAMOND SWORD & AXE", price: 80 },
-                { name: "NETHERITE SWORD & AXE", price: 150 },
-                { name: "GOD BOW", price: 500 }
-            ],
-            'shop-pickaxes': [
-                { name: "COPPER PICKAXE", price: 20 },
-                { name: "IRON PICKAXE", price: 50 },
-                { name: "DIAMOND PICKAXE", price: 80 },
-                { name: "NETHERITE PICKAXE", price: 100 }
-            ],
-            'shop-armor': [
-                { name: "IRON PACK", price: 35 },
-                { name: "DIAMOND PACK", price: 70 },
-                { name: "NETHERITE PACK", price: 250 }
-            ]
-        };
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, increment, arrayUnion, runTransaction } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
-        // --- 2. LOCAL ENGINE ---
-        let currentUser = JSON.parse(localStorage.getItem('dino_session')) || null;
-        let authMode = 'login';
-
-        function renderShop() {
-            for (const [id, items] of Object.entries(shopData)) {
-                const container = document.getElementById(id);
-                if (!container) continue;
-                container.innerHTML = items.map(item => `
-                    <div class="glass p-6 flex flex-col justify-between h-52 ruler-card group">
-                        <div>
-                            <p class="pixel-font text-[10px] mb-2 leading-tight">${item.name}</p>
-                            <p class="text-amber-400 text-2xl font-bold">${item.price} COINS</p>
-                        </div>
-                        <button onclick="buyItem('${item.name}', ${item.price})" class="w-full py-3 pixel-font text-[10px] font-bold btn-pixel">PURCHASE</button>
-                    </div>
-                `).join('');
+        // GITHUB / EXTERNAL COMPATIBILITY FIX
+        let firebaseConfig = null;
+        try {
+            if (typeof __firebase_config !== 'undefined') {
+                firebaseConfig = JSON.parse(__firebase_config);
             }
+        } catch (e) {
+            console.warn("Firebase internal config not found.");
+        }
+
+        const shopArsenal = [
+            { name: "IRON SWORD & AXE", price: 50 },
+            { name: "DIAMOND SWORD & AXE", price: 80 },
+            { name: "NETHERITE SWORD & AXE", price: 150 },
+            { name: "GOD BOW", price: 500 }
+        ];
+
+        const shopPickaxes = [
+            { name: "COPPER PICKAXE", price: 20 },
+            { name: "IRON PICKAXE", price: 50 },
+            { name: "DIAMOND PICKAXE", price: 80 },
+            { name: "NETHERITE PICKAXE", price: 100 }
+        ];
+
+        const shopArmor = [
+            { name: "IRON PACK", price: 35 },
+            { name: "DIAMOND PACK", price: 70 },
+            { name: "NETHERITE PACK", price: 250 }
+        ];
+
+        function renderItems(list, containerId) {
+            const container = document.getElementById(containerId);
+            if(!container) return;
+            container.innerHTML = list.map(item => `
+                <div class="glass p-6 flex flex-col justify-between h-52 ruler-card group">
+                    <div>
+                        <p class="pixel-font text-[10px] mb-2 leading-tight">${item.name}</p>
+                        <p class="text-amber-400 text-2xl font-bold">${item.price} COINS</p>
+                    </div>
+                    <button onclick="buy('${item.name}', ${item.price})" class="w-full py-3 pixel-font text-[10px] font-bold btn-pixel">PURCHASE</button>
+                </div>
+            `).join('');
+        }
+
+        renderItems(shopArsenal, 'shop-arsenal');
+        renderItems(shopPickaxes, 'shop-pickaxes');
+        renderItems(shopArmor, 'shop-armor');
+
+        let db, auth, appId;
+
+        if (firebaseConfig && firebaseConfig.apiKey) {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            appId = typeof __app_id !== 'undefined' ? __app_id : 'dino-universe-final';
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const savedUser = sessionStorage.getItem('dino_user');
+                    if (savedUser) loginUser(savedUser);
+                } else {
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        try {
+                            await signInWithCustomToken(auth, __initial_auth_token);
+                        } catch (e) {
+                            await signInAnonymously(auth);
+                        }
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                }
+            });
+        } else {
+            console.error("FIREBASE CONFIG MISSING");
+            window.openAuthModal = () => alert("Login requires a Firebase setup.");
+        }
+
+        let currentUser = null;
+        let authMode = 'login';
+        let isProcessing = false;
+
+        async function getDeviceID() {
+            const id = [navigator.userAgent, screen.width, screen.height, navigator.language].join("|");
+            const encoder = new TextEncoder();
+            const data = encoder.encode(id);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
         window.openAuthModal = () => document.getElementById('auth-modal').classList.add('active');
         window.closeAuthModal = () => document.getElementById('auth-modal').classList.remove('active');
-        
         window.toggleAuthMode = () => {
             authMode = authMode === 'login' ? 'register' : 'login';
             document.getElementById('auth-title').innerText = authMode.toUpperCase();
             document.getElementById('auth-switch-btn').innerText = authMode === 'login' ? "Need an account? Register" : "Have an account? Login";
         };
 
-        window.handleAuth = () => {
+        window.handleAuth = async () => {
+            if (!auth || !db) return alert("Firebase not connected.");
+            if (isProcessing) return;
             const user = document.getElementById('auth-user').value.trim().toLowerCase();
             const pass = document.getElementById('auth-pass').value.trim();
-            if (!user || !pass) return alert("ENTER ALL FIELDS!");
+            const errorEl = document.getElementById('auth-error');
+            const btn = document.getElementById('auth-primary-btn');
 
-            // Fingerprint check to prevent multiple accounts per browser
-            const deviceFingerprint = localStorage.getItem('dino_fingerprint');
-            let accounts = JSON.parse(localStorage.getItem('dino_accounts')) || {};
+            if (!user || !pass) return (errorEl.innerText = "FILL FIELDS!", errorEl.classList.remove('hidden'));
             
-            if (authMode === 'register') {
-                if (deviceFingerprint) return alert("LIMIT REACHED: ONLY 1 ACCOUNT PER BROWSER TO PREVENT EXPLOITS.");
-                if (accounts[user]) return alert("NAME TAKEN!");
+            isProcessing = true;
+            btn.innerText = "WAIT...";
+            
+            try {
+                const deviceID = await getDeviceID();
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', user);
+                const snap = await getDoc(userRef);
+
+                if (authMode === 'register') {
+                    if (snap.exists()) throw new Error("NAME TAKEN!");
+                    await setDoc(userRef, { pass, coins: 0, redeemed: [], deviceID });
+                } else {
+                    if (!snap.exists() || snap.data().pass !== pass) throw new Error("WRONG LOGIN!");
+                }
                 
-                // Set balance to 0 instead of 100
-                accounts[user] = { pass: pass, coins: 0, redeemed: [] };
-                localStorage.setItem('dino_accounts', JSON.stringify(accounts));
-                localStorage.setItem('dino_fingerprint', 'true'); // Lock browser to this account
-                alert("REGISTERED! NOW LOG IN.");
-                toggleAuthMode();
-            } else {
-                if (!accounts[user] || accounts[user].pass !== pass) return alert("WRONG LOGIN!");
-                currentUser = user;
-                localStorage.setItem('dino_session', JSON.stringify(user));
-                updateUI();
+                loginUser(user);
                 closeAuthModal();
+            } catch (e) {
+                errorEl.innerText = e.message.toUpperCase();
+                errorEl.classList.remove('hidden');
+            } finally {
+                isProcessing = false;
+                btn.innerText = "ENTER";
             }
         };
 
-        function updateUI() {
-            if (currentUser) {
-                const accounts = JSON.parse(localStorage.getItem('dino_accounts'));
-                const data = accounts[currentUser];
-                if(!data) return;
-                
-                document.getElementById('coin-count').innerText = data.coins;
-                document.getElementById('user-info').classList.replace('hidden', 'flex');
-                document.getElementById('login-trigger-btn').classList.add('hidden');
-                document.getElementById('redeem-ui').classList.remove('opacity-20', 'pointer-events-none');
-                document.getElementById('auth-warning').classList.add('hidden');
-
-                if (localStorage.getItem('dino_secret_unlocked')) {
-                    document.getElementById('secret-member').style.display = 'block';
-                }
-            }
+        function loginUser(username) {
+            currentUser = username;
+            sessionStorage.setItem('dino_user', username);
+            document.getElementById('login-trigger-btn').classList.add('hidden');
+            document.getElementById('user-info').classList.replace('hidden', 'flex');
+            document.getElementById('redeem-ui').classList.remove('opacity-20', 'pointer-events-none');
+            document.getElementById('auth-warning').classList.add('hidden');
+            syncData();
         }
 
-        window.redeem = () => {
+        window.logout = () => { sessionStorage.clear(); location.reload(); };
+
+        async function syncData() {
+            if (!currentUser || !db) return;
+            try {
+                const snap = await getDoc(doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser));
+                if (snap.exists()) document.getElementById('coin-count').innerText = snap.data().coins;
+            } catch (e) { console.error("Sync failed:", e); }
+        }
+
+        window.redeem = async () => {
+            if (!db || isProcessing || !currentUser) return;
             const input = document.getElementById('code-input');
-            const code = input.value.trim();
+            const btn = document.getElementById('redeem-btn');
+            const code = input.value.trim().toUpperCase();
             
-            // New Codes list
             const codes = { 
-                'RELEASE!': 20, 
-                'RIPIX!': 10, 
-                'WELCOME': 10, 
-                'HIGUYS!': 5 
+                'RIPIX!': 20, 
+                'LORE!': 10, 
+                'WELCOME!': 50,
+                'GOTN!': 45,
+                'TNT_TOST': 100,
+                'PIXEL': 75,
+                'REQUIEM': 150,
+                'PRISM': 300,
+                'ENID': 200
             };
-
-            if (code === "Member?") {
-                localStorage.setItem('dino_secret_unlocked', 'true');
-                document.getElementById('secret-member').style.display = 'block';
+            
+            if (!codes.hasOwnProperty(code)) return alert("INVALID CODE!");
+            
+            isProcessing = true;
+            btn.innerText = "CLAIMING...";
+            try {
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser);
+                await runTransaction(db, async (transaction) => {
+                    const snap = await transaction.get(userRef);
+                    if (snap.data().redeemed?.includes(code)) throw "ALREADY REDEEMED!";
+                    transaction.update(userRef, { redeemed: arrayUnion(code), coins: increment(codes[code]) });
+                });
                 input.value = "";
-                alert("SECRET UNLOCKED...");
-                return;
-            }
-
-            if (!codes[code]) return alert("INVALID CODE!");
-
-            let accounts = JSON.parse(localStorage.getItem('dino_accounts'));
-            if (accounts[currentUser].redeemed.includes(code)) return alert("ALREADY USED!");
-
-            accounts[currentUser].coins += codes[code];
-            accounts[currentUser].redeemed.push(code);
-            
-            localStorage.setItem('dino_accounts', JSON.stringify(accounts));
-            input.value = "";
-            updateUI();
-            alert("LOOT CLAIMED!");
+                await syncData();
+            } catch (e) { alert(e); } finally { isProcessing = false; btn.innerText = "CLAIM LOOT"; }
         };
 
-        window.buyItem = (name, price) => {
+        window.buy = async (name, price) => {
             if (!currentUser) return openAuthModal();
-
-            let accounts = JSON.parse(localStorage.getItem('dino_accounts'));
-            if (accounts[currentUser].coins < price) return alert("NOT ENOUGH COINS!");
-
-            accounts[currentUser].coins -= price;
-            localStorage.setItem('dino_accounts', JSON.stringify(accounts));
-            
-            // New Receipt Text
-            document.getElementById('receipt-body').innerText = `You bought 1x of ${name} go to the official discord and go make a ticket to claim your order, wait for the staff to reply and give your item!`;
-            
-            // 10 char random code
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let claimCode = '';
-            for (let i = 0; i < 10; i++) claimCode += chars.charAt(Math.floor(Math.random() * chars.length));
-            
-            document.getElementById('receipt-code').innerText = claimCode;
-            document.getElementById('receipt-modal').classList.add('active');
-            updateUI();
-        };
-
-        window.logout = () => {
-            localStorage.removeItem('dino_session');
-            location.reload();
+            if (!db || isProcessing) return;
+            isProcessing = true;
+            try {
+                const userRef = doc(db, 'artifacts', appId, 'public', 'data', 'users', currentUser);
+                const snap = await getDoc(userRef);
+                if (snap.data().coins < price) throw "NOT ENOUGH COINS!";
+                await updateDoc(userRef, { coins: increment(-price) });
+                document.getElementById('receipt-text').innerText = `Purchased ${name}!`;
+                document.getElementById('receipt-code').innerText = "DINO-" + Math.random().toString(36).substr(2, 9).toUpperCase();
+                document.getElementById('receipt-modal').classList.add('active');
+                syncData();
+            } catch(e) { alert(e); } finally { isProcessing = false; }
         };
 
         window.copyIP = () => {
-            const temp = document.createElement("textarea");
-            temp.value = "DinoUniverse.aternos.me:61641";
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand("copy");
-            document.body.removeChild(temp);
+            const el = document.createElement('textarea');
+            el.value = "DinoUniverse.aternos.me:61641";
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
             alert("IP COPIED!");
         };
 
-        window.showLore = () => alert("Pixel's data was corrupted. The throne remains empty.");
-
-        // Boot
-        renderShop();
-        updateUI();
+        window.showLore = () => alert("TNT_TOST has seized the Nether. Chaos spreads.");
     </script>
 </body>
 </html>
