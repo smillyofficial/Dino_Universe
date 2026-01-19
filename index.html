@@ -393,8 +393,9 @@
             const code = input.value.trim().toUpperCase();
             
             const codes = { 
-                'RIPIX!': 20, 'LORE!': 10, 'WELCOME!': 50, 'GOTN!': 45, 'TNT_TOST': 100,
-                'PIXEL': 75, 'REQUIEM': 150, 'PRISM': 300, 'ENID': 200
+                'TNT_TOST': 100,
+                'GODOFNETHER': 45,
+                'DOOM!': 150
             };
             
             if (!codes.hasOwnProperty(code)) return alert("INVALID CODE!");
@@ -412,6 +413,7 @@
                     StorageSystem.saveUser(currentUser, userData);
                     input.value = "";
                     syncData();
+                    alert(`CLAIMED ${codes[code]} COINS!`);
                 }
                 isProcessing = false;
                 btn.innerText = "CLAIM LOOT";
